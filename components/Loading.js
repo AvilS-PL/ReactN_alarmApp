@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Font from "expo-font";
 
+import Database from './Database';
+
 export default class Loading extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +18,12 @@ export default class Loading extends Component {
             'myfont': require('../assets/sup2.ttf'),
         });
         this.setState({ loaded: true, color: "white" })
+
+        // Database.createTable()
+        // Database.add()
+        // Database.getAll()
+        // Database.drop()
+        // Database.getAll()
     }
 
     test = () => {

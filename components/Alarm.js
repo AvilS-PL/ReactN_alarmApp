@@ -10,7 +10,7 @@ export default class Alarm extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ backgroundColor: "#212121", flex: 1 }}>
                 <Text> Clock </Text>
             </View>
         );
