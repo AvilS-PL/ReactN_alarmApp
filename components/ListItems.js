@@ -17,6 +17,11 @@ export default class ListItems extends Component {
     componentDidMount = async () => {
         this.get()
         this.props.navigation.addListener('focus', () => {
+            if (this.state.tab.length == 0) {
+                this.setState({
+                    loaded: false
+                })
+            }
             this.get()
         });
     }
@@ -53,7 +58,7 @@ export default class ListItems extends Component {
     load = async () => {
         let generate = []
         generate = this.state.tab.map((x) => {
-            return <ListItem fun={this.remove} h={x.h} m={x.m} key={x.id} id={x.id} />
+            return <ListItem fun={this.remove} h={x.h} m={x.m} key={x.id} id={x.id} days={x.days} />
         })
         this.setState({
             generatedTab: generate,

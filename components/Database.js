@@ -6,7 +6,7 @@ export default class Database {
         console.log("created table")
         db.transaction(tx => {
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS alarms (id integer primary key not null, h text, m text);"
+                "CREATE TABLE IF NOT EXISTS alarms (id integer primary key not null, h text, m text, days text);"
             );
         });
     }
@@ -14,7 +14,7 @@ export default class Database {
     static add() {
         console.log("added")
         db.transaction(tx => {
-            tx.executeSql("INSERT INTO alarms (h, m) values ('00', '00');");
+            tx.executeSql("INSERT INTO alarms (h, m, days) values ('00', '00', '');");
         })
     }
 
@@ -25,7 +25,17 @@ export default class Database {
                 "DELETE FROM alarms WHERE (id = " + x + ");"
             );
         });
+    }
 
+    static change(val, x) {
+        console.log("changed: " + x)
+        console.log(val)
+        db.transaction(tx => {
+            tx.executeSql(
+                "UPDATE alarms SET days = '" + val + "' WHERE (id = " + x + ");"
+            );
+        });
+        this.getAll()
     }
 
     static getAll() {
@@ -45,7 +55,7 @@ export default class Database {
     }
 
     static drop() {
-
+        console.log("dropped")
         db.transaction(tx => {
             tx.executeSql("DROP TABLE IF EXISTS alarms");
         })

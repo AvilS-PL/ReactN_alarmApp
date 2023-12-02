@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TouchableNativeFeedback, Animated } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class MyButton extends Component {
@@ -20,6 +20,7 @@ export default class MyButton extends Component {
                     borderRadius: 1 * this.props.r,
                     height: 10 * this.props.y,
                     width: 10 * this.props.x,
+                    transform: [this.props.rotated ? { rotate: "180deg" } : { rotate: "0deg" }]
                 }}>
                     <MaterialCommunityIcons
                         name={this.props.text}

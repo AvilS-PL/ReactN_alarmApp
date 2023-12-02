@@ -14,7 +14,7 @@ export default class MySelect extends Component {
                 background={TouchableNativeFeedback.Ripple('#ffffff', true)}
             >
                 <View style={{
-                    backgroundColor: this.props.color,
+                    backgroundColor: this.props.sel ? this.props.acolor : this.props.color,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 10 * this.props.x,

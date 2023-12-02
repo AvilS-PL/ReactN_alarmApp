@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Switch, Animated } from 'react-native';
+import { View, Text, StyleSheet, Switch, Animated, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import MyButton from './MyButton';
@@ -14,12 +14,46 @@ export default class ListItem extends Component {
             sound: false,
             height: new Animated.Value(140),
             expanded: false,
+            days: [],
+            week: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         };
 
         this.toValue = 0
     }
 
-    componentDidMount = () => { }
+    componentDidMount = () => {
+        let temp = []
+        if (this.props.days != null) {
+            temp = this.props.days.split("|")
+        }
+
+        this.setState({
+            days: temp
+        })
+    }
+
+    days = (x) => {
+        let temp = [...this.state.days]
+        if (temp.includes(x)) {
+            temp.splice(temp.indexOf(x), 1)
+        } else {
+            temp.push(x)
+        }
+
+        coded = ""
+        for (let i = 0; i < temp.length; i++) {
+            if (i == temp.length - 1) {
+                coded += temp[i]
+            } else {
+                coded += temp[i] + "|"
+            }
+        }
+        Database.change(coded, this.props.id)
+
+        this.setState({
+            days: temp
+        })
+    }
 
     changeSound = () => {
         this.setState({
@@ -35,10 +69,6 @@ export default class ListItem extends Component {
 
     del = async () => {
         this.props.fun(this.props.id)
-    }
-
-    days = (x) => {
-        console.log(x)
     }
 
     toggle = () => {
@@ -96,16 +126,27 @@ export default class ListItem extends Component {
                         </View>
                         <View style={styles.bottom}>
                             <MyButton fun={this.del} text="trash-can" color="#FFA000" tcolor="white" x="4" y="4" r="4" />
-                            <MyButton fun={this.toggle} text="arrow-down" color="#FFA000" tcolor="white" x="4" y="4" r="4" />
+                            <MyButton fun={this.toggle} text="arrow-down" color="#FFA000" tcolor="white" x="4" y="4" r="4" rotated={this.state.expanded} />
                         </View>
                         <View style={styles.bottom2}>
-                            <MySelect fun={this.days} text="Mon" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
-                            <MySelect fun={this.days} text="Tue" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
-                            <MySelect fun={this.days} text="Wed" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
-                            <MySelect fun={this.days} text="Thu" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
-                            <MySelect fun={this.days} text="Fri" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
-                            <MySelect fun={this.days} text="Sat" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
-                            <MySelect fun={this.days} text="Sun" color="#FFA000" acolor="#212121" tcolor="white" x="4" />
+                            <FlatList
+                                style={{ flex: 1 }}
+                                horizontal={true}
+                                data={this.state.week}
+                                renderItem={({ item }) =>
+                                    <View style={{ justifyContent: 'center', width: 45 }}>
+                                        <MySelect
+                                            fun={this.days}
+                                            text={item}
+                                            color="#FFA000"
+                                            acolor="#212121"
+                                            tcolor="white"
+                                            x="4"
+                                            sel={this.state.days.includes(item) ? true : false}
+                                        />
+                                    </View>}
+                                keyExtractor={item => item}
+                            />
                         </View>
                     </View>
                 }
@@ -148,9 +189,8 @@ const styles = StyleSheet.create({
     },
     bottom2: {
         height: 60,
-        flexDirection: "row",
-        justifyContent: 'space-evenly',
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: "#FFA000",
     },
     swi: {
