@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import MyButton from './MyButton';
 import MySelect from './MySelect';
+import Database from './Database';
 
 export default class ListItem extends Component {
     constructor(props) {
@@ -32,8 +33,8 @@ export default class ListItem extends Component {
         })
     }
 
-    del = () => {
-
+    del = async () => {
+        this.props.fun(this.props.id)
     }
 
     days = (x) => {
@@ -68,7 +69,7 @@ export default class ListItem extends Component {
                     <View style={styles.main}>
                         <View style={styles.top}>
                             <View style={styles.topLeft}>
-                                <Text style={styles.txt}> 1{this.props.id}:11 </Text>
+                                <Text style={styles.txt}> {this.props.h}:{this.props.m}</Text>
                             </View>
                             <View style={styles.topRight}>
                                 <View style={styles.swi}>

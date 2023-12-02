@@ -19,11 +19,7 @@ export default class Loading extends Component {
         });
         this.setState({ loaded: true, color: "white" })
 
-        // Database.createTable()
-        // Database.add()
-        // Database.getAll()
-        // Database.drop()
-        // Database.getAll()
+        await Database.createTable()
     }
 
     test = () => {

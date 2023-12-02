@@ -5,7 +5,6 @@ import MyButton from './MyButton';
 import ListItems from './ListItems';
 
 
-
 export default class Main extends Component {
     constructor(props) {
         super(props);
@@ -19,9 +18,9 @@ export default class Main extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: "#212121", }}>
+            <View style={{ backgroundColor: "#212121", flex: 1 }}>
                 <ScrollView>
-                    <ListItems />
+                    <ListItems navigation={this.props.navigation} />
                 </ScrollView>
                 <View style={{ position: "absolute", left: 0, right: 0, bottom: 20, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{ elevation: 3, backgroundColor: "#FFA000", borderRadius: 4 }}>
