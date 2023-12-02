@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import Loading from './components/Loading';
+import Main from './components/Main';
+import Alarm from './components/Alarm';
+
+const Stack = createNativeStackNavigator();
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <NavigationContainer>
+        <StatusBar />
+        <Stack.Navigator>
+          <Stack.Screen options={{ headerShown: false }} name="loading" component={Loading} />
+          <Stack.Screen
+            options={{
+              title: 'Alarms',
+              headerStyle: { backgroundColor: '#FFA000' },
+              headerTintColor: '#ffffff',
+              headerTitleStyle: {
+                fontFamily: 'myfont',
+              }
+            }}
+            name="main"
+            component={Main} />
+          <Stack.Screen
+            options={{
+              title: 'Set Alarm',
+              headerStyle: { backgroundColor: '#FFA000' },
+              headerTintColor: '#ffffff',
+              headerTitleStyle: {
+                fontFamily: 'myfont',
+              }
+            }}
+            name="alarm"
+            component={Alarm} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
