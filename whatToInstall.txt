@@ -29,3 +29,6 @@ npx expo install expo-image-picker
 
 baza danych:
 npx expo install expo-sqlite
+
+dźwięk:
+npx expo install expo-av

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Vibration } from 'react-native';
+import { Audio } from 'expo-av';
 
 import ListItem from './ListItem';
 import Database from './Database';
@@ -11,7 +12,10 @@ export default class ListItems extends Component {
             tab: [],
             generatedTab: [],
             loaded: false,
+            music: {},
+            playing: false,
         };
+
     }
 
     componentDidMount = async () => {
@@ -25,7 +29,12 @@ export default class ListItems extends Component {
             this.get()
         });
         this.interval = setInterval(() => this.check(), 1000);
+        const sound = new Audio.Sound();
+        this.setState({
+            music: sound
+        })
     }
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
@@ -62,7 +71,7 @@ export default class ListItems extends Component {
     load = async () => {
         let generate = []
         generate = this.state.tab.map((x) => {
-            return <ListItem fun={this.remove} h={x.h} m={x.m} key={x.id} id={x.id} days={x.days} />
+            return <ListItem fun={this.remove} h={x.h} m={x.m} key={x.id} id={x.id} days={x.days} s={x.s} v={x.v} update={this.update} />
         })
         this.setState({
             generatedTab: generate,
@@ -70,16 +79,102 @@ export default class ListItems extends Component {
         })
     }
 
-    check = () => {
-        console.log(this.state.tab)
+    update = async (id, what, x) => {
+        for (let i = 0; i < this.state.tab.length; i++) {
+            if (this.state.tab[i].id == id) {
+                if (what == "days") {
+                    this.state.tab[i].days = x
+                } else if (what == "sound") {
+                    this.state.tab[i].s = x
+                } else if (what == "vibrations") {
+                    this.state.tab[i].v = x
+                }
+                break
+            }
+        }
+    }
+
+
+    check = async () => {
         for (let i = 0; i < this.state.tab.length; i++) {
             let temp = this.state.tab[i]
-            let today = new Date()
-            // switch(){
+            let tempDays = temp.days.split("|")
 
-            // }
-            today.setMinutes(1)
-            console.log(today.getMinutes())
+            let date = new Date()
+            let day = date.getDay()
+            if (day == 0) {
+                day = "Sun"
+            } else if (day == 1) {
+                day = "Mon"
+            } else if (day == 2) {
+                day = "Tue"
+            } else if (day == 3) {
+                day = "Wed"
+            } else if (day == 4) {
+                day = "Thu"
+            } else if (day == 5) {
+                day = "Fri"
+            } else if (day == 6) {
+                day = "Sat"
+            }
+
+            let hour = date.getHours()
+            if (hour < 10) {
+                hour = "0" + hour
+            }
+            let minute = date.getMinutes()
+            if (minute < 10) {
+                minute = "0" + minute
+            }
+
+            let check = true
+
+            if (!(tempDays.includes(day))) {
+                check = false
+            } else if (!(hour == temp.h)) {
+                check = false
+            } else if (!(minute == temp.m)) {
+                check = false
+            }
+            if (check) {
+                if (temp.v == true) {
+                    console.log(temp.v)
+                    Vibration.vibrate(1000, true)
+                } else {
+                    Vibration.cancel()
+                }
+                if (temp.s == true) {
+                    this.play()
+                    this.setState({
+                        playing: true
+                    })
+                } else {
+                    this.stop()
+                    this.setState({
+                        playing: false
+                    })
+                }
+            } else {
+                this.stop()
+                this.setState({
+                    playing: false
+                })
+                Vibration.cancel()
+            }
+
+        }
+    }
+
+    play = async () => {
+        console.log(!this.state.playing)
+        if (!this.state.playing) {
+            await this.state.music.loadAsync(require('../assets/music.mp3'))
+            await this.state.music.playAsync();
+        }
+    }
+    stop = async () => {
+        if (this.state.playing) {
+            await this.state.music.unloadAsync()
         }
     }
 

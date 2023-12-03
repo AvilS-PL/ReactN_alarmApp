@@ -10,14 +10,13 @@ export default class ListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            vibrations: false,
-            sound: false,
+            vibrations: this.props.v == "true" ? true : false,
+            sound: this.props.s == "true" ? true : false,
             height: new Animated.Value(140),
             expanded: false,
             days: [],
             week: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         };
-
         this.toValue = 0
     }
 
@@ -42,7 +41,7 @@ export default class ListItem extends Component {
 
         coded = ""
         for (let i = 0; i < temp.length; i++) {
-            if (i == temp.length - 1) {
+            if (i == temp.length - 1 || i == 0) {
                 coded += temp[i]
             } else {
                 coded += temp[i] + "|"
@@ -53,15 +52,20 @@ export default class ListItem extends Component {
         this.setState({
             days: temp
         })
+        this.props.update(this.props.id, "days", coded)
     }
 
     changeSound = () => {
+        Database.sound(!this.state.sound, this.props.id)
+        this.props.update(this.props.id, "sound", !this.state.sound)
         this.setState({
             sound: !this.state.sound
         })
     }
 
     changeVibrations = () => {
+        Database.vib(!this.state.vibrations, this.props.id)
+        this.props.update(this.props.id, "vibrations", !this.state.vibrations)
         this.setState({
             vibrations: !this.state.vibrations
         })
