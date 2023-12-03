@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback, Dimensions } from 'react-native';
+import { View, Text, TouchableNativeFeedback, Dimensions, Vibration } from 'react-native';
 
 import MyButton from './MyButton';
 import AlarmButton from './AlarmButton';
@@ -43,6 +43,7 @@ export default class Alarm extends Component {
         this.setState({
             h: hour
         })
+        Vibration.vibrate(50)
     }
 
     setMinute = (x) => {
@@ -68,7 +69,7 @@ export default class Alarm extends Component {
             m: minute,
             prevM: prev,
         })
-
+        Vibration.vibrate(50)
     }
 
     render() {
@@ -85,10 +86,10 @@ export default class Alarm extends Component {
                 y2 = Math.abs((((small * 50) / 2) * (Math.sin(((30 * (i - 3)) * Math.PI) / 180) + 1))) + (big * 10) + (big * 50 - small * 50) / 10
                 obj1.push(
                     <View
+                        key={i}
                         style={{ position: "absolute", right: x, top: y }}>
                         <AlarmButton
                             fun={this.setHour}
-                            key={i}
                             text={i}
                             color="#FFC107"
                             tcolor="white"
@@ -98,10 +99,10 @@ export default class Alarm extends Component {
                 )
                 obj2.push(
                     <View
+                        key={i == 12 ? 0 : i + 12}
                         style={{ position: "absolute", right: x2, top: y2 }}>
                         <AlarmButton
                             fun={this.setHour}
-                            key={i == 12 ? 0 : i + 12}
                             text={i == 12 ? 0 : i + 12}
                             color="#FFA000"
                             tcolor="white"
@@ -116,10 +117,10 @@ export default class Alarm extends Component {
                 y = Math.abs((((big * 50) / 2) * (Math.sin(((30 * (i - 3)) * Math.PI) / 180) + 1)))
                 obj1.push(
                     <View
+                        key={i == 12 ? 0 : i * 5}
                         style={{ position: "absolute", right: x, top: y }}>
                         <AlarmButton
                             fun={this.setMinute}
-                            key={i == 12 ? 0 : i * 5}
                             text={i == 12 ? 0 : i * 5}
                             color="#FFC107"
                             tcolor="white"

@@ -24,6 +24,10 @@ export default class ListItems extends Component {
             }
             this.get()
         });
+        this.interval = setInterval(() => this.check(), 1000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     get = async () => {
@@ -64,6 +68,19 @@ export default class ListItems extends Component {
             generatedTab: generate,
             loaded: true
         })
+    }
+
+    check = () => {
+        console.log(this.state.tab)
+        for (let i = 0; i < this.state.tab.length; i++) {
+            let temp = this.state.tab[i]
+            let today = new Date()
+            // switch(){
+
+            // }
+            today.setMinutes(1)
+            console.log(today.getMinutes())
+        }
     }
 
     render() {
