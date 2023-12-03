@@ -91,7 +91,6 @@ export default class ListItem extends Component {
             <Animated.View style={{
                 overflow: 'hidden',
                 height: this.state.height,
-                backgroundColor: "#FF0000",
                 margin: 10,
                 borderRadius: 4,
             }} >
@@ -103,20 +102,20 @@ export default class ListItem extends Component {
                             </View>
                             <View style={styles.topRight}>
                                 <View style={styles.swi}>
-                                    <MaterialCommunityIcons name="speaker-wireless" size={24} color="white" />
+                                    <MaterialCommunityIcons name="speaker-wireless" size={24} color="white" style={{ opacity: this.state.sound ? 1 : 0.5 }} />
                                     <Switch
                                         style={{ marginLeft: 10 }}
-                                        trackColor={{ false: '#aaaaaa99', true: '#ffffff' }}
+                                        trackColor={{ false: '#aaaaaa55', true: '#FFA000' }}
                                         thumbColor={this.state.sound ? '#ffffff' : '#cccccc'}
                                         onValueChange={this.changeSound}
                                         value={this.state.sound}
                                     />
                                 </View>
                                 <View style={styles.swi}>
-                                    <MaterialCommunityIcons name="vibrate" size={24} color="white" />
+                                    <MaterialCommunityIcons name="vibrate" size={24} color="white" style={{ opacity: this.state.vibrations ? 1 : 0.5 }} />
                                     <Switch
                                         style={{ marginLeft: 10 }}
-                                        trackColor={{ false: '#aaaaaa99', true: '#ffffff' }}
+                                        trackColor={{ false: '#aaaaaa55', true: '#FFA000' }}
                                         thumbColor={this.state.vibrations ? '#ffffff' : '#cccccc'}
                                         onValueChange={this.changeVibrations}
                                         value={this.state.vibrations}

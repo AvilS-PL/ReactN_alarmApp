@@ -11,10 +11,10 @@ export default class Database {
         });
     }
 
-    static add() {
+    static add(h, m) {
         console.log("added")
         db.transaction(tx => {
-            tx.executeSql("INSERT INTO alarms (h, m, days) values ('00', '00', '');");
+            tx.executeSql("INSERT INTO alarms (h, m, days) values ('" + h + "', '" + m + "', '');");
         })
     }
 
